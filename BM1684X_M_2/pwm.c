@@ -6,6 +6,7 @@
 #include <libopencm3/stm32/rcc.h>
 #include <libopencm3/stm32/gpio.h>
 #include <libopencm3/stm32/timer.h>
+#include <pin.h>
 
 #define PWM_FREQUENCY (1)  /* PWM frequency in Hz. */
 #define PWM_DUTY_CYCLE (60) /* PWM duty-cycle in %. */
@@ -28,11 +29,11 @@ void gpio_setup(void)
     /* Enable GPIOB clock. */
     rcc_periph_clock_enable(RCC_GPIOB);
     /* Set PB5 (for TIM22_CH2) to alternate function mode. */
-    gpio_mode_setup(VOL_PWM_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, VOL_PWM_PIN);
+    gpio_mode_setup(PWM_VDDC_PORT, GPIO_MODE_AF, GPIO_PUPD_NONE, PWM_VDDC_PIN);
     /* Set alternate function for PB5 to TIM22_CH2. */
-    gpio_set_af(VOL_PWM_PORT, GPIO_AF2, VOL_PWM_PIN);
+    gpio_set_af(PWM_VDDC_PORT, GPIO_AF2, PWM_VDDC_PIN);
     /* Set PB5 to push-pull with 50 MHz speed. */
-    gpio_set_output_options(VOL_PWM_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, VOL_PWM_PIN);
+    gpio_set_output_options(PWM_VDDC_PORT, GPIO_OTYPE_PP, GPIO_OSPEED_50MHZ, PWM_VDDC_PIN);
 }
 
 void pwm_setup(void)

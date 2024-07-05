@@ -35,6 +35,7 @@ void chip_disable(void)
 void chip_enable(void)
 {
 	gpio_set(SYS_RST_PORT, SYS_RST_PIN);
+	debug("enter chip_enable \n");
 	chip_enabled = true;
 }
 

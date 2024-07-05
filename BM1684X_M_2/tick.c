@@ -32,7 +32,6 @@ int tick_register_task(void (*func)(void), unsigned long interval)
 {
 	if (task_num >= ARRAY_SIZE(task))
 		return -1;
-
 	task[task_num].tick = 0;
 	task[task_num].interval = interval;
 	task[task_num].func = func;

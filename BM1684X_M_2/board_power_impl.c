@@ -4,7 +4,7 @@
 #include <mp5475.h>
 int pmic_channel_a_on(void)
 {
-	return mp5475_buck_on(0);
+	return mp5475_buck_on(0x90);
 }
 
 void pmic_channel_a_off(void)
@@ -14,7 +14,7 @@ void pmic_channel_a_off(void)
 
 int pmic_channel_d_on(void)
 {
-	return mp5475_buck_on(3);
+	return mp5475_buck_on(0x10);
 }
 
 void pmic_channel_d_off(void)
@@ -24,7 +24,7 @@ void pmic_channel_d_off(void)
 
 int pmic_channel_b_on(void)
 {
-	return mp5475_buck_on(1);
+	return mp5475_buck_on(0xf0);
 }
 
 void pmic_channel_b_off(void)
@@ -34,7 +34,7 @@ void pmic_channel_b_off(void)
 
 int pmic_channel_c_on(void)
 {
-	return mp5475_buck_on(2);
+	return mp5475_buck_on(0xb0);
 }
 
 void pmic_channel_c_off(void)
@@ -55,6 +55,7 @@ void sys_rst_deassert_off(void)
 int sys_rst_assert_on(void)
 {
 	chip_disable();
+	// gpio_clear(PCIEE_RST_X_MCU_PORT,PCIEE_RST_X_MCU_PIN);
 	return 0;
 }
 

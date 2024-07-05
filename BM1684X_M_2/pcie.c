@@ -8,6 +8,8 @@
 #include <tick.h>
 #include <wdt.h>
 #include <rst_key.h>
+#include <pic.h>
+
 static volatile int is_chip_ready;
 static int pcie_task;
 
@@ -28,12 +30,15 @@ void pcie_reset_isr(void)
 	}
 
 	if (hi > lo) {
-		if (is_chip_ready)
-			chip_enable();
+		if (is_chip_ready){
+			// gpio_set(PCIEE_RST_X_MCU_PORT,PCIEE_RST_X_MCU_PIN);
+			chip_enable(); 
+		}
 		debug("pcie e-reset raising edge\n");
 	} else {
 		is_chip_ready = false;
 		chip_disable();
+		// gpio_clear(PCIEE_RST_X_MCU_PORT,PCIEE_RST_X_MCU_PIN);
 		tick_set_task_interval(pcie_task, 30);
 		wdt_reset();
 		debug("pcie e-reset falling edge\n");

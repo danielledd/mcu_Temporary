@@ -61,14 +61,16 @@ int main(void)
 	led_set_frequency(0);
 	i2c_master_init(I2C1);
 	i2c_master_init(I2C2);
+	debug("i2c init done\n");
 	//i2c_master_init(I2C3);
 	mp5475_init();
-	mp5475_buck_on(0);
+	debug("mp5475_init done\n");
+	// mp5475_buck_on(0);
+	// debug("mp5475_buck_on done\n");
 	//timer_mdelay(200);
 
 	/* check if i am in test board and if we need enter test mode */
-	if (detect_test_mode() == TEST_MODE_HALT) {
-
+	if (0){//detect_test_mode() == TEST_MODE_HALT) {
 		mcu_set_test_mode(true);
 		led_set_frequency(10);
 		/* convert MCU_INT from input to output */
@@ -103,15 +105,17 @@ int main(void)
 	// gpio_mode_setup(MCU_INT_PORT, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP,
 	// 		MCU_INT_PIN);
 
-	tca6416a_probe();
-	pic_probe();
+	// tca6416a_probe();
+	// pic_probe();
 	timer_udelay(50*1000);
 	power_init();
+	debug("power_init done\n");
 	timer_udelay(1000);
 	mp5475_init();
+	debug("enter power\n");
 	power_on();
+	debug("power done\n");
 	chip_init();
-
 	debug("%s %s working at ",
 	      get_board_type_name(),
 	      get_stage() == RUN_STAGE_LOADER ? "loader" : "application");
@@ -173,7 +177,7 @@ int main(void)
 
 	/* start i2c slaves */
 	i2c_slave_start(&i2c1_slave_ctx);
-
+	debug("\n\ni2c_slave_start done\n");
 	if (get_work_mode() == WORK_MODE_SOC)
 		chip_enable();
 	else

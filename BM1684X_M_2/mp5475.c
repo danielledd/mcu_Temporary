@@ -32,8 +32,7 @@ static inline int mp5475_write_byte(unsigned char cmd,
 int mp5475_buck_on(unsigned int buck)
 {
 	// mp5475_enable_reg_value |= (1 << 5) >> buck;
-    mp5475_enable_reg_value = (1 << (7 - buck))
-
+    mp5475_enable_reg_value = buck;//(1 << (7 - buck)) | 0x10;
 	mp5475_write_byte(0x22, mp5475_enable_reg_value);
 	return 0;
 }
@@ -50,8 +49,8 @@ void mp5475_buck_off(unsigned int buck)
 int mp5475_voltage_config(unsigned int buck, unsigned int voltage)
 {
 	unsigned int reg = 0x03 + 4 * buck;
-	unsigned int value = voltage / 2;
-	mp5475_write_byte(reg, value);
+	//unsigned int value = voltage / 2;
+	mp5475_write_byte(reg, voltage);
 	return 0;
 }
 
@@ -77,11 +76,12 @@ int mp5475_get_tmp(void)
 int mp5475_init(void)
 {
 	/* enable system enable, disable buck 1, 2, 3, 4 */
-	// mp5475_write_byte(0x22, mp5475_enable_reg_value);
-	mp5475_voltage_config(0, 800);
-	mp5475_voltage_config(1, 600);
-	mp5475_voltage_config(2, 1100);
-	mp5475_voltage_config(3, 1800);
+	
+	// mp5475_voltage_config(0, 0x20);//800
+	// mp5475_voltage_config(1, 0x10);//600
+	// mp5475_voltage_config(2, 0x38);//1100
+	// mp5475_voltage_config(3, 0x70);//1800
+	mp5475_write_byte(0x22, 0x10);
 	return 0;
 }
 

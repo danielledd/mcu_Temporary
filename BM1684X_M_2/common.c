@@ -7,8 +7,9 @@
 #include <i2c_slave.h>
 #include <i2c_master.h>
 #include <mcu-e2prom.h>
+#include <debug.h>
 
-#define MCU_SW_VER	4
+#define MCU_SW_VER	19
 #define DDR_TYPE	DDR_TYPE_LPDDR4X
 
 static uint8_t board_type;
@@ -80,8 +81,9 @@ void board_init(void)
 
 	work_mode = gpio_get(PCIE_RESET_PORT, PCIE_RESET_PIN) ?
 		WORK_MODE_SOC : WORK_MODE_PCIE;
-
+	debug("work_mode :%u\n", work_mode);
 	if (work_mode == WORK_MODE_PCIE) {
+		// gpio_set(PCIEE_RST_X_MCU_PORT,PCIEE_RST_X_MCU_PIN);
 		if (is_mixed_mode())
 			work_mode = WORK_MODE_MIXED;
 	}
@@ -99,12 +101,12 @@ uint8_t get_declared_board_type(void)
 
 static inline void led_on(void)
 {
-	gpio_set(MCU_LED_PORT, MCU_LED_PIN);
+	gpio_set(STATUS_LED0_PORT, STATUS_LED0_PIN);
 }
 
 static inline void led_off(void)
 {
-	gpio_clear(MCU_LED_PORT, MCU_LED_PIN);
+	gpio_clear(STATUS_LED0_PORT, STATUS_LED0_PIN);
 }
 
 int led_tick_handle;
