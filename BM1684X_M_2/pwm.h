@@ -1,8 +1,6 @@
 #ifndef PWM_H
 #define PWM_H
 
-void gpio_setup(void);
-// void pwm_setup(void);
 void pwm_set_duty_cycle(uint32_t duty_cycle);
 void init_pwm(void);
 void tim22_pwm_init(void);

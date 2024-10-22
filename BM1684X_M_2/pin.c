@@ -11,8 +11,8 @@ void pin_init(void)
     GPIO_OTYPER(GPIOA) = 0;
     /* output speed, low, medium, high, very high */
     GPIO_OSPEEDR(GPIOA) =
-        (GPIO_OSPEEDR(GPIOA) & ~0xc3ff0000) | (GPIO_OSPEED_LOW << (6 * 2))|
-        (GPIO_OSPEED_LOW << (8 * 2)) |
+        (GPIO_OSPEEDR(GPIOA) & ~0xc3ff0000) | (GPIO_OSPEED_HIGH << (5 * 2)) |
+        (GPIO_OSPEED_LOW << (6 * 2)) | (GPIO_OSPEED_LOW << (8 * 2)) |
         (GPIO_OSPEED_LOW << (9 * 2)) | (GPIO_OSPEED_LOW << (10 * 2)) |
         (GPIO_OSPEED_LOW << (11 * 2)) |
         (GPIO_OSPEED_LOW << (12 * 2)) | (GPIO_OSPEED_LOW << (15 * 2));
@@ -35,7 +35,7 @@ void pin_init(void)
         (GPIO_MODER(GPIOA) & ~0xc3ffffff) | (GPIO_MODE_ANALOG << (0 * 2)) |
         (GPIO_MODE_ANALOG << (1 * 2)) | (GPIO_MODE_AF << (2 * 2)) |
         (GPIO_MODE_AF << (3 * 2)) | (GPIO_MODE_OUTPUT << (4 * 2)) |
-        (GPIO_MODE_INPUT << (5 * 2)) | (GPIO_MODE_INPUT << (6 * 2)) |
+        (GPIO_MODE_AF << (5 * 2)) | (GPIO_MODE_INPUT << (6 * 2)) |
         (GPIO_MODE_ANALOG << (7 * 2)) | (GPIO_MODE_OUTPUT << (8 * 2)) |
         (GPIO_MODE_OUTPUT << (9 * 2)) | (GPIO_MODE_OUTPUT << (10 * 2)) |
         (GPIO_MODE_OUTPUT << (11 * 2)) | (GPIO_MODE_OUTPUT << (12 * 2)) |
