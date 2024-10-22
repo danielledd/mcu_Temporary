@@ -15,7 +15,6 @@
 #include <tick.h>
 #include <mcu.h>
 #include <project.h>
-#include <se5.h>
 #include <mcu-e2prom.h>
 
 /* magic number for different type of watchdogs, no need now */
@@ -140,9 +139,9 @@ void wdt_process(void)
 		mcu_eeprom_power_off_reason(EEPROM_POWER_OFF_REASON_WATCHDOG);
 		// mcu_raise_interrupt(1, MCU_INT_WDT_RST);
 		wdt_reset();	/* reset to initial state */
-		if (get_board_type() == SM5ME)
-			se5_reset_board();
-		else
+		// if (get_board_type() == SM5ME)
+		// 	se5_reset_board();
+		// else
 			chip_reset();
 	}
 }

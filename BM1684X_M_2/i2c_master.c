@@ -148,3 +148,16 @@ int i2c_master_smbus_read_word(int i2c, unsigned char addr,
 				     &cmd, 1, (uint8_t *)data, 2);
 }
 
+
+int i2c_master_smbus_write_word(int i2c, unsigned char addr,
+				unsigned long timeout,
+				unsigned char cmd, uint16_t data)
+{
+	unsigned char tmp[3];
+
+	tmp[0] = cmd;
+	tmp[1] = data & 0xff;
+	tmp[2] = (data >> 8) & 0xff;
+
+	return i2c_transfer7_timeout(i2c, addr, timeout, tmp, 3, NULL, 0);
+}

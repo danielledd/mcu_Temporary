@@ -39,6 +39,15 @@ void chip_enable(void)
 	chip_enabled = true;
 }
 
+void chip_enable_and_ddr_pg(void)
+{
+	gpio_set(SYS_RST_PORT, SYS_RST_PIN);
+	mdelay(32);
+	gpio_set(DDR_PWR_GOOD_PORT, DDR_PWR_GOOD_PIN);
+	debug("enter chip_enable \n");
+	chip_enabled = true;
+}
+
 void chip_reset(void)
 {
 	chip_disable();

@@ -143,9 +143,9 @@ static uint16_t adc2current(unsigned short adc)
 	 */
 
 	/*
-	 *I_12V = (adc * 3.3) / (4096*100*0.005)
+	 *I_12V = (adc * 3.3) / (4096*100*0.003)
 	 */
-	return 3300UL * adc / 2048;
+	return 3300UL * adc / 1229;
 }
 
 static void adc2tmp(unsigned short adc)
@@ -215,4 +215,4 @@ void mon_init(void)
 
 	loop_add(mon_process);
 }
-
+/*它通过配置 ADC 读取电压、电流和温度，并使用滤波器对数据进行平滑处理，同时定期更新数据*/

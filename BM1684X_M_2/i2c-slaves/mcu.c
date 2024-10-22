@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 #include <libopencm3/cm3/nvic.h>
 #include <i2c_master.h>
 #include <string.h>
@@ -11,12 +18,14 @@
 #include <mcu-e2prom.h>
 #include <eeprom.h>
 #include <power.h>
-#include <se5.h>
 #include <wdt.h>
 #include <mcu.h>
 #include <stdio.h>
 #include <pcie.h>
 #include <at24c128c-e2prom.h>
+#include <mpm3695.h>
+#include <pwm.h>
+#include <debug.h>
 
 #define REG_BOARD_TYPE		0x00
 #define REG_SW_VER		0x01
@@ -74,6 +83,9 @@
 #define REG_CURRENT_LO		0x28
 #define REG_CURRENT_HI		0x29
 
+#define VDDC_VOLT		0x2a
+#define TPU_VOLT		0x2b
+
 #define REG_STAGE		0x3c
 #define REG_SE6_BOARD_ID	0x3d	/* 8bit for se6 board id*/
 #define REG_EEPROM_OFFSET_LO	0x3e	/* 16bit eeprom address, low 8bits */
@@ -88,6 +100,7 @@
 #define REG_CTRITICAL_TEMP	0x66
 #define REG_REPOWERON_TEMP	0x67
 #define MCU_REG_MAX		0x68
+
 
 #define MCU_EEPROM_DATA_MAX	0x20
 
@@ -108,6 +121,8 @@ struct mcu_ctx {
 	uint8_t critical_action;
 	uint8_t	repoweron_temp;
 	uint8_t critical_temp;
+	int vddc_volt;
+	int tpu_volt;
 };
 
 static struct mcu_ctx mcu_ctx;
@@ -315,6 +330,22 @@ static void mcu_write(void *priv, volatile uint8_t data)
 	case REG_CTRITICAL_TEMP:
 		ctx->critical_temp = data;
 		break;
+	case VDDC_VOLT:
+		// do something to set vddc volt
+		debug("get pwm data:%d\n",data);
+		if (ctx->vddc_volt != data){
+			debug("start to data:%d\n",data);
+			pwm_set_duty_cycle(data);
+			ctx->vddc_volt = data;
+		}
+		break;
+	case TPU_VOLT:
+		// do something to set tpu volt
+		if (ctx->tpu_volt != data){
+			set_voltage(data);
+			ctx->tpu_volt = data;
+		}
+		break;
 	default:
 		break;
 	}
@@ -436,6 +467,9 @@ static uint8_t mcu_read(void *priv)
 		break;
 	case REG_CTRITICAL_TEMP:
 		ret = ctx->critical_temp;
+		break;
+	case TPU_VOLT:
+		ret = get_voltage_mV();
 		break;
 	default:
 		ret = 0xff;

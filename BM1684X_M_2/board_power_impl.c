@@ -2,6 +2,7 @@
 #include <chip.h>
 #include <common.h>
 #include <mp5475.h>
+#include <timer.h>
 int pmic_channel_a_on(void)
 {
 	return mp5475_buck_on(0x90);
@@ -14,6 +15,8 @@ void pmic_channel_a_off(void)
 
 int pmic_channel_d_on(void)
 {
+	// mp5475_buck_on(0x0);
+	// timer_udelay(58*1000);
 	return mp5475_buck_on(0x10);
 }
 

@@ -78,10 +78,10 @@ int mp5475_init(void)
 	/* enable system enable, disable buck 1, 2, 3, 4 */
 	
 	// mp5475_voltage_config(0, 0x20);//800
-	// mp5475_voltage_config(1, 0x10);//600
-	// mp5475_voltage_config(2, 0x38);//1100
-	// mp5475_voltage_config(3, 0x70);//1800
-	mp5475_write_byte(0x22, 0x10);
+	mp5475_voltage_config(1, 0x10);//600
+	mp5475_voltage_config(2, 0x38);//1100
+	mp5475_voltage_config(3, 0x70);//1800
+	// mp5475_write_byte(0x22, 0x10);
 	return 0;
 }
 

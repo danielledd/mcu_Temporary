@@ -22,5 +22,8 @@ int i2c_master_smbus_read(int i2c, unsigned char addr,
 int i2c_master_smbus_read_word(int i2c, unsigned char addr,
 			       unsigned long timeout,
 			       unsigned char cmd, uint16_t *data);
+int i2c_master_smbus_write_word(int i2c, unsigned char addr,
+				unsigned long timeout,
+				unsigned char cmd, uint16_t data);
 
 #endif

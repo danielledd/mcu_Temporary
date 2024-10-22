@@ -31,7 +31,7 @@ DEPS := $(patsubst %.o, %.d, $(OBJS))
 LDSCRIPT_APP = $(TARGET)_APP.ld
 LDSCRIPT_LOADER = $(TARGET)_LOADER.ld
 
-OPT_CFLAGS = -g -O2
+OPT_CFLAGS = -Os
 ARCH_CFLAGS = -mthumb -mcpu=cortex-m0plus
 SPEC_CFLAGS = -specs=nano.specs
 

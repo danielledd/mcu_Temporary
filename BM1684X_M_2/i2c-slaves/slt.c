@@ -10,7 +10,6 @@
 #include <chip.h>
 #include <eeprom.h>
 #include <power.h>
-#include <se5.h>
 #include <wdt.h>
 #include <mcu.h>
 

@@ -29,7 +29,7 @@ void sys_rst_deassert_off(void);
 int sys_rst_assert_on(void);
 void sys_rst_assert_off(void);
 
-struct power_node board_power_nodes[15] = {
+struct power_node board_power_nodes[14] = {
 
     {"SYS-RST-ASSERT", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 0,
     {(unsigned long)sys_rst_assert_on, (unsigned long)sys_rst_assert_off},
@@ -39,7 +39,7 @@ struct power_node board_power_nodes[15] = {
     {(unsigned long)pmic_channel_d_on, (unsigned long)pmic_channel_d_off},
     },
 
-    {"VDD-CORE", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 0,
+    {"VDD-CORE", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 2000,
     {(unsigned long)EN_VDDC_PORT, (unsigned long)EN_VDDC_PIN},
     },
 
@@ -47,7 +47,7 @@ struct power_node board_power_nodes[15] = {
     {(unsigned long)EN_VDDIO33_PORT, (unsigned long)EN_VDDIO33_PIN},
     },
 
-    {"VDD-0.8V", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 0,
+    {"VDD-0.8V", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 1000,
     {(unsigned long)pmic_channel_a_on, (unsigned long)pmic_channel_a_off},
     },
 
@@ -55,14 +55,13 @@ struct power_node board_power_nodes[15] = {
     {(unsigned long)P08_PWR_GOOD_PORT, (unsigned long)P08_PWR_GOOD_PIN},
     },
 
-    {"ACK-PCIE", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 0,
-    {(unsigned long)GPIO2_PORT, (unsigned long)GPIO2_PIN},
-    },
-
-    {"VDD-TPU", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 3000,
+    {"VDD-TPU", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 0,
     {(unsigned long)EN_VDD_TPU_PORT, (unsigned long)EN_VDD_TPU_PIN},
     },
 
+    {"ACK-PCIE", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 4000,
+    {(unsigned long)GPIO2_PORT, (unsigned long)GPIO2_PIN},
+    },
     {"ACK-TPU", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 0,
     {(unsigned long)GPIO3_PORT, (unsigned long)GPIO3_PIN},
     },
@@ -71,7 +70,7 @@ struct power_node board_power_nodes[15] = {
     {(unsigned long)pmic_channel_c_on, (unsigned long)pmic_channel_c_off},
     },
 
-    {"DDR-VDDQLP", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 1000,
+    {"DDR-VDDQLP", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 0,
     {(unsigned long)pmic_channel_b_on, (unsigned long)pmic_channel_b_off},
     },
 
@@ -83,14 +82,13 @@ struct power_node board_power_nodes[15] = {
     {(unsigned long)sys_rst_deassert_on, (unsigned long)sys_rst_deassert_off},
     },
 
-    {"ACK-DDR", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 29000,
-    {(unsigned long)DDR_PWR_GOOD_PORT, (unsigned long)DDR_PWR_GOOD_PIN},
-    },
-
-    {"SYS-RST-ASSERT", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 30000,
+    {"SYS-RST-ASSERT", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 50000,
     {(unsigned long)sys_rst_assert_on, (unsigned long)sys_rst_assert_off},
     },
 
+    // {"ACK-DDR", NODE_TYPE_ENABLE, POWER_STATUS_OFF, 0,
+    // {(unsigned long)DDR_PWR_GOOD_PORT, (unsigned long)DDR_PWR_GOOD_PIN},
+    // },
 
 };
 

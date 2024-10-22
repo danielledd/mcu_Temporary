@@ -17,6 +17,9 @@
 #include <pin.h>
 #include <chip.h>
 #include <system.h>
+#include <loop.h>
+#include <string.h>
+#include <stdlib.h>
 
 #define AHB_FREQ	(32 * 1000 * 1000)
 #define APB1_FREQ	AHB_FREQ
@@ -69,6 +72,7 @@ void system_init(void)
 
 #ifdef DEBUG
 	system_usart2_init();
+
 #endif
 
 	tick_init();

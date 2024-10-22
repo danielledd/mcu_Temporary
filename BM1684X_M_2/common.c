@@ -9,7 +9,7 @@
 #include <mcu-e2prom.h>
 #include <debug.h>
 
-#define MCU_SW_VER	19
+#define MCU_SW_VER	34
 #define DDR_TYPE	DDR_TYPE_LPDDR4X
 
 static uint8_t board_type;
@@ -31,7 +31,7 @@ int get_soc_temp(void)
 	return soc_temp;
 }
 
-void set_board_temp(int temp)
+void set_board_temp(int temp) 
 {
 	board_temp = temp;
 }

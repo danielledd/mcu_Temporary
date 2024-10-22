@@ -15,4 +15,5 @@ int chip_is_enabled(void);
 void set_needpoweron(void);
 int get_needpoweron_satus(void);
 void clr_needpoweron(void);
+void chip_enable_and_ddr_pg(void);
 #endif

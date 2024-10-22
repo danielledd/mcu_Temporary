@@ -1,6 +1,7 @@
 #include <loop.h>
 #include <stdbool.h>
-
+#include <debug.h>
+// #include <mpm3695.h>
 static struct loop {
 	int num;
 	loop_entry entry[MAIN_LOOP_ENTRY_MAX];

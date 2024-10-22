@@ -7,6 +7,8 @@
 
 unsigned long tim6_cnt;
 
+#define TIMER6_COUNTER_MAX	65536
+
 int timer_setup(void)
 {
 	rcc_periph_clock_enable(RCC_TIM6);
@@ -80,6 +82,13 @@ void timer_udelay(unsigned long us)
 {
 	if (us == 0)
 		return;
+
+	while (us > (TIMER6_COUNTER_MAX - 1)) {
+		timer_start(TIMER6_COUNTER_MAX - 1);
+		while (!timer_is_timeout())
+			;
+		us = us - (TIMER6_COUNTER_MAX - 1);
+	}
 
 	timer_start(us);
 	while (!timer_is_timeout())

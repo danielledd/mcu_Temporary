@@ -24,6 +24,8 @@ void mon_print_init(void)
     mon_print_handle = tick_register_task(mon_print_fun, 0);
     if (mon_print_handle == -1)
         debug("mon print task register failed\n");
+    else
+        debug("!!!!mon print task register success!!!!\n");
 }
 
 void enable_mon_print_task(int second)

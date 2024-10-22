@@ -22,19 +22,15 @@
 #include <tca6416a.h>
 #include <project.h>
 #include <power.h>
-#include <se5.h>
-#include <sm7.h>
+#include <mpm3695.h>
 #include <loop.h>
 #include <keyboard.h>
 #include <eeprom.h>
 #include <wdt.h>
 #include <pcie.h>
-#include <slt.h>
+#include <console.h>
 #include <ct7451.h>
-#include <rst_key.h>
 #include <mon_print.h>
-#include <at24c128c-e2prom.h>
-#include <se6.h>
 #include <mcu-e2prom.h>
 #include <pwm.h>
 
@@ -43,10 +39,10 @@ static struct i2c_slave_ctx i2c2_slave_ctx;
 
 int main(void)
 {
+	gpio_clear(CONN_PCIE_RST_N_RC_L_PORT, CONN_PCIE_RST_N_RC_L_PIN);
 	clock_init();
 	system_init();
 
-	//rst_key_init();
 	timer_mdelay(100);
 
 	debug("\nSOPHONE BM1684X_M_2\n");
@@ -62,51 +58,10 @@ int main(void)
 	i2c_master_init(I2C1);
 	i2c_master_init(I2C2);
 	debug("i2c init done\n");
-	//i2c_master_init(I2C3);
 	mp5475_init();
 	debug("mp5475_init done\n");
-	// mp5475_buck_on(0);
-	// debug("mp5475_buck_on done\n");
-	//timer_mdelay(200);
 
-	/* check if i am in test board and if we need enter test mode */
-	if (0){//detect_test_mode() == TEST_MODE_HALT) {
-		mcu_set_test_mode(true);
-		led_set_frequency(10);
-		/* convert MCU_INT from input to output */
-		/*
-		gpio_clear(MCU_INT_PORT, MCU_INT_PIN);
-		gpio_set_output_options(MCU_INT_PORT, GPIO_OTYPE_PP,
-					GPIO_OSPEED_VERYHIGH, MCU_INT_PIN);
-		gpio_mode_setup(MCU_INT_PORT, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE,
-				MCU_INT_PIN);
-		*/
-		
-		set_board_type(SM7M);
-
-		i2c_slave_init(&i2c2_slave_ctx, (void *)I2C2_BASE,
-			       I2C2_OA1, I2C2_OA2, I2C2_OA2_MASK);
-		mcu_test_init(&i2c2_slave_ctx);
-		nvic_enable_irq(NVIC_I2C2_IRQ);
-		i2c_slave_start(&i2c2_slave_ctx);
-
-		while (detect_test_mode() != TEST_MODE_RUN) {
-			mcu_process();
-			if (!mcu_get_test_mode())
-				break;
-		}
-
-		set_board_type(BM1684X_M_2);
-		nvic_disable_irq(NVIC_I2C2_IRQ);
-		i2c_slave_stop(&i2c2_slave_ctx);
-	}
-	/* reset MCU_INT */
-	// gpio_clear(MCU_INT_PORT, MCU_INT_PIN);
-	// gpio_mode_setup(MCU_INT_PORT, GPIO_MODE_INPUT, GPIO_PUPD_PULLUP,
-	// 		MCU_INT_PIN);
-
-	// tca6416a_probe();
-	// pic_probe();
+	
 	timer_udelay(50*1000);
 	power_init();
 	debug("power_init done\n");
@@ -135,58 +90,40 @@ int main(void)
 	mon_init();
 	mon_print_init();
 
-	/* check if i am se8 crtl board */
-	if (is_se6ctrl_board()){
-		set_board_type(SM7M_MP_SE8M);
-		set_hardware_version(0,0);
-		set_soc_forever();
-		}
-	else if (mcu_get_se6_aiucore()){
-                set_soc_forever();
-	 	set_board_type(BM1684X_M_2);
-	}
-	else{
-		set_board_type(BM1684X_M_2);
-	}
-	
+	set_board_type(BM1684X_M_2);
+
 	mcu_init(&i2c1_slave_ctx);
 	mcu_eeprom_init(&i2c1_slave_ctx);
 	wdt_init(&i2c1_slave_ctx);
-	//slt_init(&i2c1_slave_ctx);
 
-	if (tca6416a_available())
-		tca6416a_init(&i2c1_slave_ctx);
+	// if (tca6416a_available())
+	// 	tca6416a_init(&i2c1_slave_ctx);
 
-	if (get_board_type() == SM7M_MP_SE8M)
-		kbd_init(&i2c1_slave_ctx);
-	if (pic_available())
-		pic_init(&i2c1_slave_ctx);
+	// if (pic_available())
+	// 	pic_init(&i2c1_slave_ctx);
 
 	ct7451_init(&i2c1_slave_ctx);
 
-	if (get_work_mode() == WORK_MODE_SOC) {
-		sm7_init();
-		if (get_board_type() == SM7M_MP_SE8M) {
-			se6_init();
-			if (get_eeprom_type() == AT24C01D)
-				at24c01d_init(&i2c1_slave_ctx);
-			else
-				at24c128c_init(&i2c1_slave_ctx);
-		}
-	}
+	// if (get_work_mode() == WORK_MODE_SOC) {
+	// 	sm7_init();
+	// }
 
 	/* start i2c slaves */
 	i2c_slave_start(&i2c1_slave_ctx);
 	debug("\n\ni2c_slave_start done\n");
-	if (get_work_mode() == WORK_MODE_SOC)
-		chip_enable();
+	if (get_work_mode() == WORK_MODE_SOC){
+		chip_enable_and_ddr_pg();
+		debug("\n\nchip_enable_and_ddr_pg done\n");
+	}
 	else
 		pcie_init();
 
-	/* never return */
+	debug("\n\nenter init_mpm3695\n");
+	init_mpm3695();
 	init_pwm();
+	console_add();
+	/* never return */
 	loop_start();
-
 	return 0;
 }
 
