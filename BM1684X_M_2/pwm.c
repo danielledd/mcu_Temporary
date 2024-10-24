@@ -48,7 +48,7 @@ void tim2_pwm_init(void)
     // Set TIM2 period to 1000 ticks (for 1MHz PWM frequency)
     timer_set_period(TIM2, 1000 - 1);
     // Set the duty cycle to 75% (750 ticks)
-    timer_set_oc_value(TIM2, TIM_OC1, 750);
+    timer_set_oc_value(TIM2, TIM_OC1, 400);
     // Configure TIM2 channel 1 in PWM mode 1
     timer_set_oc_mode(TIM2, TIM_OC1, TIM_OCM_PWM1);
     timer_enable_oc_output(TIM2, TIM_OC1);
@@ -66,5 +66,5 @@ void init_pwm(void)
     tim22_pwm_init();
     pwm_set_duty_cycle(350);
     tim2_pwm_init();
-    pwm_set_t2_duty_cycle(750);
+    pwm_set_t2_duty_cycle(400);
 }

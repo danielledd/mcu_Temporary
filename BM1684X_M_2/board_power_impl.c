@@ -5,7 +5,10 @@
 #include <timer.h>
 int pmic_channel_a_on(void)
 {
-	return mp5475_buck_on(0x90);
+	return mp5475_buck_on(0x98);
+	// 0x22  1001 0000
+	// 0000 1000
+	// 1001 1000
 }
 
 void pmic_channel_a_off(void)
@@ -15,9 +18,9 @@ void pmic_channel_a_off(void)
 
 int pmic_channel_d_on(void)
 {
-	// mp5475_buck_on(0x0);
-	// timer_udelay(58*1000);
-	return mp5475_buck_on(0x10);
+	return mp5475_buck_on(0x18);
+	// 0x22   0001 0000
+	// 0001 1000
 }
 
 void pmic_channel_d_off(void)
@@ -27,7 +30,9 @@ void pmic_channel_d_off(void)
 
 int pmic_channel_b_on(void)
 {
-	return mp5475_buck_on(0xf0);
+	return mp5475_buck_on(0xf8);
+	// 0x22 1111 0000
+	// 1111 1000
 }
 
 void pmic_channel_b_off(void)
@@ -37,7 +42,9 @@ void pmic_channel_b_off(void)
 
 int pmic_channel_c_on(void)
 {
-	return mp5475_buck_on(0xb0);
+	return mp5475_buck_on(0xb8);
+	// 0x22  1011 0000
+	// 1011 1000
 }
 
 void pmic_channel_c_off(void)

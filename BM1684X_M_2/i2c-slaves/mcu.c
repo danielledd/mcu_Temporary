@@ -1,10 +1,3 @@
-
-
-
-
-
-
-
 #include <libopencm3/cm3/nvic.h>
 #include <i2c_master.h>
 #include <string.h>

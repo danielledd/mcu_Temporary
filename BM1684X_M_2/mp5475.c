@@ -81,7 +81,7 @@ int mp5475_init(void)
 	mp5475_voltage_config(1, 0x12);//625
 	mp5475_voltage_config(2, 0x40);//1125
 	// mp5475_voltage_config(3, 0x70);//1800
-	// mp5475_write_byte(0x22, 0x10);
+	mp5475_write_byte(0x22, 0x08);
 	return 0;
 }
 
