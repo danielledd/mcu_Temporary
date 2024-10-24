@@ -15,7 +15,6 @@
 #include <loop.h>
 #include <chip.h>
 #include <mon_print.h>
-#include <mpm3695.h>
 #include <pwm.h>
 
 static struct ecdc_console *console;
@@ -130,31 +129,6 @@ static void cmd_enprint(void *hint, int argc, char const *argv[])
     }
 }
 
-static const char * const cmd_setvoltage_usage =
-    "setvoltage [mV]\n"
-    " Set the output voltage to the specified value in mV\n";
-
-static void cmd_setvoltage(void *hint, int argc, char const *argv[])
-{
-    if (argc == 2) {
-        uint16_t voltage_mV = atoi(argv[1]);
-        set_voltage(voltage_mV);
-        printf("Voltage set to %d mV\n", voltage_mV);
-    } else {
-        printf(cmd_setvoltage_usage);
-    }
-}
-
-static const char * const cmd_getvoltage_usage =
-    "getvoltage\n"
-    " Get the current output voltage in mV\n";
-
-static void cmd_getvoltage(void *hint, int argc, char const *argv[])
-{
-    int voltage_mV = get_voltage_mV();
-    printf("Current Voltage: %d mV\n", voltage_mV);
-}
-
 static const char * const cmd_pwm_usage =
 "pwmpb5 [duty_cycle]\n"
 " Set the PB5 pwm duty cycle to the specified value (0-1000)\n";
@@ -211,8 +185,6 @@ static struct command command_list[] = {
     {"enprint", NULL, cmd_enprint_usage, cmd_enprint},
     {"pwmpb5", NULL, cmd_pwm_usage, cmd_pwm},
     {"pwmpa5", NULL, cmd_pwmpa5_usage, cmd_pwmpa5},
-    {"setvoltage", NULL, cmd_setvoltage_usage, cmd_setvoltage},
-    {"getvoltage", NULL, cmd_getvoltage_usage, cmd_getvoltage},   
 };
 
 void print_usage(struct command *cmd)

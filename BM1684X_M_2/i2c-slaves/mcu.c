@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <pcie.h>
 #include <at24c128c-e2prom.h>
-#include <mpm3695.h>
 #include <pwm.h>
 #include <debug.h>
 
@@ -116,7 +115,6 @@ struct mcu_ctx {
 	uint8_t critical_temp;
 	uint8_t pwm_value;
 	int vddc_volt;
-	int tpu_volt;
 };
 
 static struct mcu_ctx mcu_ctx;
@@ -140,22 +138,6 @@ static int tpu_get_power_status(void)
 {
 	return power_nodes_status(tpu_powers, ARRAY_SIZE(tpu_powers));
 }
-
-/*
-void mcu_raise_interrupt(uint8_t reg_idx, uint8_t interrupts)
-{
-	mcu_ctx.int_status[reg_idx] |= interrupts;
-	if ((mcu_ctx.int_status[0]&(~mcu_ctx.int_mask[0])) || (mcu_ctx.int_status[1]&(~mcu_ctx.int_mask[1])))
-		gpio_set(MCU_INT_PORT, MCU_INT_PIN);
-}
-
-void mcu_clear_interrupt(uint8_t reg_idx, uint8_t interrupts)
-{
-	mcu_ctx.int_status[reg_idx] &= ~interrupts;
-	if ((mcu_ctx.int_status[0]&(~mcu_ctx.int_mask[0] == 0)) && (mcu_ctx.int_status[1]&(~mcu_ctx.int_mask[1] == 0)))
-		gpio_clear(MCU_INT_PORT, MCU_INT_PIN);
-}
-*/
 
 void mcu_set_int_mask(uint8_t reg_idx, uint8_t mask)
 {
@@ -234,11 +216,11 @@ void mcu_process(void)
 		mcu_set_se6_aiucore();
 		break;
 	case CMD_SET_VDDC_VOLT:
-		debug("set pwm value to %d\n", ctx->pwm_value);
-		pwm_set_duty_cycle(ctx->pwm_value);
+		debug("set pwm value to %d\n", mcu_ctx.pwm_value);
+		pwm_set_duty_cycle(mcu_ctx.pwm_value);
 		break;
 	default:
-		debug("Invalid process cmd\n",mcu_ctx.cmd);
+		debug("Invalid process cmd\n");
 		break;
 	}
 	mcu_ctx.cmd = 0;
@@ -270,17 +252,6 @@ static void mcu_write(void *priv, volatile uint8_t data)
 	case REG_CMD:
 		ctx->cmd_tmp = data;
 		break;
-	// case REG_INT_STATUS1:
-		// if (data == 0x80) {
-		// 	mcu_clear_interrupt(1, TEST_INT);
-		// } else 
-		// 	mcu_clear_interrupt(0, data);
-		// gpio_clear(MCU_INT_PORT, MCU_INT_PIN);
-		// break;
-	// case REG_INT_STATUS2:
-	// 	if (data & TEST_INT)
-	// 		// mcu_raise_interrupt(1, TEST0_INT);
-	// 	break;
 	case REG_INT_MASK1:
 		mcu_set_int_mask(0, data);
 		break;
@@ -342,7 +313,7 @@ static void mcu_write(void *priv, volatile uint8_t data)
 		// do something to set tpu volt
 		break;
 	default:
-		debug("Invalid write cmd, %d\n",ctx->idx)
+		debug("Invalid write cmd, %d\n",ctx->idx);
 		break;
 	}
 
@@ -464,9 +435,6 @@ static uint8_t mcu_read(void *priv)
 	case REG_CTRITICAL_TEMP:
 		ret = ctx->critical_temp;
 		break;
-	// case TPU_VOLT:
-	// 	ret = get_voltage_mV();
-	// 	break;
 	default:
 		ret = 0xff;
 		break;
