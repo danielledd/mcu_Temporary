@@ -143,9 +143,9 @@ static uint16_t adc2current(unsigned short adc)
 	 */
 
 	/*
-	 *I_12V = (adc * 3.3) / (4096*100*0.003)
+	 *I_12V = (adc * 3.3) / (4096*100*0.005)
 	 */
-	return 3300UL * adc / 1229;
+	return 3300UL * adc / 2048;
 }
 
 static void adc2tmp(unsigned short adc)

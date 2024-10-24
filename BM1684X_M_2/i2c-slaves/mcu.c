@@ -76,7 +76,7 @@
 #define REG_CURRENT_LO		0x28
 #define REG_CURRENT_HI		0x29
 
-#define VDDC_VOLT		0x2a
+#define REG_VDDC_VOLT		0x2a
 #define TPU_VOLT		0x2b
 
 #define REG_STAGE		0x3c
@@ -114,6 +114,7 @@ struct mcu_ctx {
 	uint8_t critical_action;
 	uint8_t	repoweron_temp;
 	uint8_t critical_temp;
+	uint8_t pwm_value;
 	int vddc_volt;
 	int tpu_volt;
 };
@@ -198,6 +199,7 @@ bool mcu_get_se6_aiucore(void)
 #define CMD_REBOOT		0x07	// power off - power on
 #define CMD_UPDATE		0x08
 #define CMD_SE6_AIU_POWER_ON	0x09 // exit test mode
+#define CMD_SET_VDDC_VOLT	0x0a
 
 void mcu_process(void)
 {
@@ -231,7 +233,12 @@ void mcu_process(void)
 		mcu_set_test_mode(false);
 		mcu_set_se6_aiucore();
 		break;
+	case CMD_SET_VDDC_VOLT:
+		debug("set pwm value to %d\n", ctx->pwm_value);
+		pwm_set_duty_cycle(ctx->pwm_value);
+		break;
 	default:
+		debug("Invalid process cmd\n",mcu_ctx.cmd);
 		break;
 	}
 	mcu_ctx.cmd = 0;
@@ -323,23 +330,19 @@ static void mcu_write(void *priv, volatile uint8_t data)
 	case REG_CTRITICAL_TEMP:
 		ctx->critical_temp = data;
 		break;
-	case VDDC_VOLT:
+	case REG_VDDC_VOLT:
 		// do something to set vddc volt
-		debug("get pwm data:%d\n",data);
+		debug("Get pwm data: %d\n",data);
 		if (ctx->vddc_volt != data){
-			debug("start to data:%d\n",data);
-			pwm_set_duty_cycle(data);
-			ctx->vddc_volt = data;
+			debug("set pwm value to: %d\n",data);
+			ctx->pwm_value = data;
 		}
 		break;
 	case TPU_VOLT:
 		// do something to set tpu volt
-		if (ctx->tpu_volt != data){
-			set_voltage(data);
-			ctx->tpu_volt = data;
-		}
 		break;
 	default:
+		debug("Invalid write cmd, %d\n",ctx->idx)
 		break;
 	}
 
@@ -461,9 +464,9 @@ static uint8_t mcu_read(void *priv)
 	case REG_CTRITICAL_TEMP:
 		ret = ctx->critical_temp;
 		break;
-	case TPU_VOLT:
-		ret = get_voltage_mV();
-		break;
+	// case TPU_VOLT:
+	// 	ret = get_voltage_mV();
+	// 	break;
 	default:
 		ret = 0xff;
 		break;
