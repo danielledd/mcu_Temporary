@@ -65,7 +65,7 @@ int main(void)
 	power_init();
 	debug("power_init done\n");
 	timer_udelay(1000);
-	mp5475_init();
+	// mp5475_init();
 	debug("enter power\n");
 	power_on();
 	debug("power done\n");
@@ -94,12 +94,6 @@ int main(void)
 	mcu_init(&i2c1_slave_ctx);
 	mcu_eeprom_init(&i2c1_slave_ctx);
 	wdt_init(&i2c1_slave_ctx);
-
-	// if (tca6416a_available())
-	// 	tca6416a_init(&i2c1_slave_ctx);
-
-	// if (pic_available())
-	// 	pic_init(&i2c1_slave_ctx);
 
 	ct7451_init(&i2c1_slave_ctx);
 

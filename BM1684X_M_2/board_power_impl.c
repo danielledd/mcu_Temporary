@@ -32,6 +32,7 @@ int pmic_channel_b_on(void)
 {
 	return mp5475_buck_on(0xf8);
 	// 0x22 1111 0000
+	// 0x22 1111 0000
 	// 1111 1000
 }
 

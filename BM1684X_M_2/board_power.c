@@ -35,7 +35,7 @@ struct power_node board_power_nodes[14] = {
     {(unsigned long)sys_rst_assert_on, (unsigned long)sys_rst_assert_off},
     },
 
-    {"PMIC-VDD-1.8V", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 0,
+    {"PMIC-VDD-1.8V", NODE_TYPE_FUNCTION, POWER_STATUS_OFF, 50000,
     {(unsigned long)pmic_channel_d_on, (unsigned long)pmic_channel_d_off},
     },
 
