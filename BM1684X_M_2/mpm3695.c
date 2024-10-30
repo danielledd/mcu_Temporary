@@ -61,8 +61,9 @@ int get_voltage_mV(void) {
 
  void init_mpm3695(void){
     debug("Entering init_3695\n");
-    mpm3695_write_byte(MFR_CTRL_OPS,0x03);
-    // 00000011
+    mpm3695_write_byte(MFR_CTRL_OPS,0x07);
+    // 0000 0111
+
     uint16_t vout_command = mpm3695_read_byte(MFR_CTRL_OPS);
     debug("Read MFR_CTRL_OPS: 0x%02X\n", vout_command);
 }

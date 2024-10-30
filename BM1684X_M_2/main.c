@@ -22,7 +22,7 @@
 #include <tca6416a.h>
 #include <project.h>
 #include <power.h>
-// #include <mpm3695.h>
+#include <mpm3695.h>
 #include <loop.h>
 #include <keyboard.h>
 #include <eeprom.h>
@@ -112,7 +112,7 @@ int main(void)
 		pcie_init();
 
 	// debug("\n\nenter init_mpm3695\n");
-	// init_mpm3695();
+	init_mpm3695();
 	init_pwm();
 	console_add();
 	/* never return */
