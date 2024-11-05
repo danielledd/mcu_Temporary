@@ -16,6 +16,8 @@
 #include <chip.h>
 #include <mon_print.h>
 #include <pwm.h>
+#include <mp5475.h>
+#include <errno.h>
 
 static struct ecdc_console *console;
 
@@ -167,6 +169,27 @@ static void cmd_pwmpa5(void *hint, int argc, char const *argv[])
     }
 }
 
+static const char * const cmd_buck0_voltage_usage =
+"buck0_voltage [voltage]\n"
+" Set the buck0 voltage to the specified hex value (0x0 - 0x1388, equivalent to 0 - 5000 mV)\n";
+
+static void cmd_buck0_voltage(void *hint, int argc, char const *argv[])
+{
+    if (argc == 2) {
+        char *endptr;
+        errno = 0;  // Clear errno before conversion
+        long voltage = strtol(argv[1], &endptr, 16); // Parse input as hexadecimal
+
+        if (errno == 0 && *endptr == '\0' && voltage >= 0 && voltage <= 0x1388) {
+            mp5475_voltage_config(0, (unsigned int)voltage);
+        } else {
+            printf("Invalid voltage. Please enter a hex value between 0x0 and 0x1388.\n");
+        }
+    } else {
+        printf(cmd_buck0_voltage_usage);
+    }
+}
+
 struct command {
     const char *name, *alias, *usage;
     ecdc_callback_fn fn;
@@ -185,6 +208,7 @@ static struct command command_list[] = {
     {"enprint", NULL, cmd_enprint_usage, cmd_enprint},
     {"pwmpb5", NULL, cmd_pwm_usage, cmd_pwm},
     {"pwmpa5", NULL, cmd_pwmpa5_usage, cmd_pwmpa5},
+    {"buck0_voltage", NULL, cmd_buck0_voltage_usage, cmd_buck0_voltage},
 };
 
 void print_usage(struct command *cmd)
