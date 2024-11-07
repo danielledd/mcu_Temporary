@@ -22,7 +22,7 @@
 
 #define PCB_ADC_CHANNEL	0
 #define BOM_ADC_CHANNEL	1
-#define I12V_ADC_CHANNEL	4
+#define I12V_ADC_CHANNEL	7
 #define NTCTMP_ADC_CHANNEL	6
 
 struct filter {
