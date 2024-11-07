@@ -39,7 +39,6 @@ static struct i2c_slave_ctx i2c2_slave_ctx;
 
 int main(void)
 {
-	gpio_clear(CONN_PCIE_RST_N_RC_L_PORT, CONN_PCIE_RST_N_RC_L_PIN);
 	clock_init();
 	system_init();
 
@@ -87,7 +86,7 @@ int main(void)
 		       I2C1_OA1, I2C1_OA2, I2C1_OA2_MASK);
 
 	mon_init();
-	mon_print_init();
+	//mon_print_init();
 
 	set_board_type(BM1684X_M_2);
 

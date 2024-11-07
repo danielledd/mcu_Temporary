@@ -20,7 +20,7 @@ void pin_init(void)
     GPIO_PUPDR(GPIOA) =
         (GPIO_PUPDR(GPIOA) & ~0xc3ff0fff) | (GPIO_PUPD_NONE << (0 * 2)) |
         (GPIO_PUPD_NONE << (1 * 2)) | (GPIO_PUPD_NONE << (2 * 2)) |
-        (GPIO_PUPD_NONE << (3 * 2)) | (GPIO_PUPD_NONE << (4 * 2)) | (GPIO_PUPD_PULLDOWN << (6 * 2))
+        (GPIO_PUPD_NONE << (3 * 2)) | (GPIO_PUPD_NONE << (4 * 2)) | (GPIO_PUPD_PULLDOWN << (6 * 2)) |
         (GPIO_PUPD_NONE << (5 * 2)) | (GPIO_PUPD_NONE << (7 * 2)) | (GPIO_PUPD_PULLDOWN << (8 * 2)) |
         (GPIO_PUPD_PULLDOWN << (9 * 2)) | (GPIO_PUPD_PULLDOWN << (10 * 2)) |
         (GPIO_PUPD_PULLDOWN << (11 * 2)) | (GPIO_PUPD_PULLDOWN << (12 * 2)) |
